@@ -32,3 +32,9 @@ npm run test:all                                    # everything
 ## Deploy
 `docker build -t portfolio . && docker run -p 3001:3001 -v $PWD/data:/app/data portfolio`
 (or any Node host: build, then `npm start`).
+
+Alternatively, run with Docker Compose:
+```bash
+docker compose up --build
+```
+The app is available at `http://localhost:3001`; Compose stores contact messages in the persistent `portfolio-data` volume. Stop it with `docker compose down`.
