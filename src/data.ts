@@ -1,8 +1,6 @@
 export const profile = {
   name: 'Vivekanand Kurane',
   email: 'vivekkurane90@gmail.com',
-  phone: '+919767600446',
-  phoneDisplay: '+91 97676 00446',
   linkedin: 'https://linkedin.com/in/vivekanand-kurane-47732a207',
   location: 'Pune, Maharashtra',
   roles: ['agentic AI platforms', 'LangGraph pipelines', 'full-stack web apps', 'human-in-the-loop systems'],

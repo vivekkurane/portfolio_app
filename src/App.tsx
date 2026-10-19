@@ -115,7 +115,6 @@ export default function App() {
             <div className="cta" style={{ justifyContent: 'center', marginBottom: 28 }}>
               <a className="btn" href={`mailto:${profile.email}`}>{profile.email}</a>
               <a className="btn" href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a className="btn" href={`tel:${profile.phone}`}>{profile.phoneDisplay}</a>
             </div>
             <ContactForm />
           </div>
