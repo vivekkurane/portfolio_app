@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { profile, stats, experience, projects, skills, extras, sections } from './data';
 import { useReveal, useTyped, useCountUp, useTheme, useScrollSpy } from './hooks';
 import ContactForm from './ContactForm';
+import AgentFlow from './AgentFlow';
 
 function Stat({ n, suffix, label }: (typeof stats)[number]) {
   const [ref, val] = useCountUp(n);
@@ -15,6 +16,7 @@ function Stat({ n, suffix, label }: (typeof stats)[number]) {
 
 function Tilt({ children }: { children: React.ReactNode }) {
   const move = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const el = e.currentTarget, r = el.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
     el.style.transform = `perspective(700px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
@@ -50,7 +52,7 @@ export default function App() {
         <section className="hero" id="top">
           <div>
             <span className="tag"><i />Open to opportunities · {profile.location}</span>
-            <h1>Hi, I’m <span className="gr">{profile.name}</span></h1>
+            <div className="hero-identity"><img className="about-portrait" src="/profile.jpg" alt={`Portrait of ${profile.name}`} width={160} height={180} /><div className="hero-eyebrow">FULL-STACK ENGINEER<br />AGENTIC AI SYSTEMS</div></div><h1>Hi, I’m <span className="gr">{profile.name}</span><span className="hero-statement">From ideas to<br />intelligent systems.</span></h1>
             <div className="role">I build <span data-testid="typed">{typed}</span><em /></div>
             <p className="lead">{profile.lead}</p>
             <div className="cta">
@@ -59,18 +61,17 @@ export default function App() {
               <a className="btn" href="#contact">Get in touch</a>
             </div>
           </div>
-          <div className="ph">
-            <img src="/profile.jpg" alt={`Portrait of ${profile.name}`} width={640} height={771} fetchPriority="high" />
-            <span className="chip c1">⚡ LangGraph · FastAPI</span><span className="chip c2">🅰️ Angular · Next.js</span>
-          </div>
+          <AgentFlow />
+
         </section>
 
-        <section id="about" className="rv"><div className="sub">About</div><h2>Full-stack roots, agentic AI focus</h2>
+        <div className="tech-strip" aria-label="Core technologies"><span>BUILT WITH INTENT</span>{["Python", "LangGraph", "FastAPI", "React", "Angular", "PostgreSQL"].map(t => <b key={t}>{t}</b>)}</div>
+        <section id="about" className="rv"><div className="about-heading"><div><div className="sub">01 / About me</div><h2>Full-stack roots,<br />agentic AI focus.</h2></div></div>
           <p className="muted">{profile.about}</p>
           <div className="stats">{stats.map((s) => <Stat key={s.label} {...s} />)}</div>
         </section>
 
-        <section id="exp"><div className="sub rv">Experience</div><h2 className="rv">Where I’ve worked</h2>
+        <section id="exp"><div className="sub rv">02 / The journey</div><h2 className="rv">Where I’ve worked</h2>
           <div className="tl">
             {experience.map((j) => (
               <div className="card rv" key={j.title + j.period} data-testid="job">
@@ -82,11 +83,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="work"><div className="sub rv">Projects</div><h2 className="rv">Selected work</h2>
+        <section id="work"><div className="sub rv">03 / Selected work</div><h2 className="rv">Selected work</h2>
           <div className="grid">
-            {projects.map((p) => (
+            {projects.map((p, index) => (
               <Tilt key={p.name}>
-                <h3>{p.name}</h3><div className="co">{p.meta}</div>
+                <div className="project-top"><span>CASE STUDY / 0{index + 1}</span><span aria-hidden="true">↗</span></div><div className={`project-art art-${index}`} aria-hidden="true"><span>{["⌘", "◈", "↗"][index]}</span><code>{["map → plan → review → execute", "data · decisions · delivery", "less friction. more momentum."][index]}</code></div><h3>{p.name}</h3><div className="co">{p.meta}</div>
                 <p className="muted" style={{ margin: 0 }}>{p.text}</p>
                 {p.tags.map((t) => <span className="pill" key={t}>{t}</span>)}
               </Tilt>
@@ -94,7 +95,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="skills"><div className="sub rv">Skills</div><h2 className="rv">Toolbox</h2>
+        <section id="skills"><div className="sub rv">04 / Capabilities</div><h2 className="rv">Toolbox</h2>
           <div className="grid">
             {skills.map((g) => (
               <div className="card sk rv" key={g.group} data-testid="skill-group"><h3>{g.group}</h3>
@@ -110,7 +111,7 @@ export default function App() {
         </section>
 
         <section id="contact" className="rv">
-          <div className="card ct"><div className="sub">Contact</div><h2>Let’s build something great</h2>
+          <div className="card ct"><div className="sub">05 / Start a conversation</div><h2>Let’s build something great</h2>
             <p className="muted">Open to conversations about agentic AI, full-stack engineering and new roles.</p>
             <div className="cta" style={{ justifyContent: 'center', marginBottom: 28 }}>
               <a className="btn" href={`mailto:${profile.email}`}>{profile.email}</a>

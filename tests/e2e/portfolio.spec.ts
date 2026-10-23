@@ -13,6 +13,17 @@ const stored = () => JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
 test.beforeAll(() => fs.rmSync(DATA_FILE, { force: true }));
 
 test.describe('page content', () => {
+  test('workflow demo supports selection and keyboard navigation', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('tab', { name: '03 Review' }).click();
+    await expect(page.getByRole('tabpanel')).toContainText('Keep people in the loop.');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByRole('tab', { name: '04 Execute' })).toBeFocused();
+    await expect(page.getByRole('tabpanel')).toContainText('Turn a plan into an outcome.');
+    await page.getByRole('button', { name: 'Next step' }).click();
+    await expect(page.getByRole('tab', { name: '01 Map' })).toHaveAttribute('aria-selected', 'true');
+  });
+
   test('renders hero, portrait and loads without console errors', async ({ page }) => {
     const errors: string[] = [];
     page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
@@ -121,7 +132,6 @@ test.describe('links & résumé', () => {
     await expect(c.getByRole('link', { name: 'vivekkurane90@gmail.com' })).toHaveAttribute('href', 'mailto:vivekkurane90@gmail.com');
     await expect(c.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute('href', 'https://linkedin.com/in/vivekanand-kurane-47732a207');
     await expect(c.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute('rel', /noopener/);
-    await expect(c.getByRole('link', { name: '+91 97676 00446' })).toHaveAttribute('href', 'tel:+919767600446');
   });
 
   test('résumé downloads as a real PDF', async ({ page, request }) => {

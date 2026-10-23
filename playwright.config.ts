@@ -1,6 +1,8 @@
 import { defineConfig } from '@playwright/test';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
-export const DATA_FILE = '/tmp/portfolio-e2e/messages.json';
+export const DATA_FILE = join(tmpdir(), 'portfolio-e2e', 'messages.json');
 export default defineConfig({
   testDir: 'tests/e2e',
   workers: 1,
@@ -9,7 +11,8 @@ export default defineConfig({
   reporter: [['list']],
   use: { baseURL: 'http://localhost:4173', trace: 'retain-on-failure' },
   webServer: {
-    command: `PORT=4173 DATA_FILE=${DATA_FILE} RATE_LIMIT_MAX=1000 node server/index.js`,
+    command: 'node server/index.js',
+    env: { PORT: '4173', DATA_FILE, RATE_LIMIT_MAX: '1000' },
     url: 'http://localhost:4173/api/health',
     reuseExistingServer: false,
   },
